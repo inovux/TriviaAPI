@@ -1,3 +1,4 @@
 .idea
 lib
-/frontend/node_modules
+frontend/node_modules
+*.pyc
