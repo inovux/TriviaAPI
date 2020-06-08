@@ -38,6 +38,25 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['categories']))
         self.assertTrue(data['total_categories'])
 
+    def test_get_questions_with_pagination(self):
+        res = self.client().get('/questions?page=1')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['current_category'], None)
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(len(data['categories']))
+
+    def test_404_error_questions_with_pagination(self):
+        res = self.client().get('/questions?page=1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['error'], 404)
+        self.assertEqual(data['message'], 'resource not found')
+
     """
     TODO
     Write at least one test for each test for successful operation and for expected errors.

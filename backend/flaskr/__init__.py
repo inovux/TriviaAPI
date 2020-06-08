@@ -9,6 +9,14 @@ from models import setup_db, Question, Category
 QUESTIONS_PER_PAGE = 10
 
 
+def paginate_questions(request, questions):
+    page_number = request.args.get('page', 1, type=int)
+    start = (page_number - 1) * QUESTIONS_PER_PAGE
+    end = start + QUESTIONS_PER_PAGE
+
+    return questions[start:end]
+
+
 def create_app(test_config=None):
     app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -34,11 +42,34 @@ def create_app(test_config=None):
           'total_categories': len(formatted_categories)
         })
 
-    '''
-  @TODO: 
-  Create an endpoint to handle GET requests 
-  for all available categories.
-  '''
+    @app.route('/questions', methods=['GET'])
+    def get_questions():
+        questions = Question.query.order_by(Question.id)
+        formatted_questions = [question.format() for question in questions]
+        current_questions = paginate_questions(request, formatted_questions)
+
+        if len(current_questions) == 0:
+            abort(404)
+
+        categories = Category.query.all()
+        formatted_categories = {category.id: category.type for category in categories}
+
+        return jsonify({
+            'success': True,
+            'questions': current_questions,
+            'total_questions': len(formatted_questions),
+            'current_category': None,
+            'categories': formatted_categories
+        })
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+          'success': False,
+          'error': 404,
+          'message': 'resource not found'
+        }), 404
+
 
     '''
   @TODO: 
