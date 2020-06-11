@@ -9,10 +9,12 @@ from models import setup_db, Question, Category
 QUESTIONS_PER_PAGE = 10
 
 
-def paginate_questions(request, questions):
+def paginate_questions(request, selection):
     page_number = request.args.get('page', 1, type=int)
     start = (page_number - 1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
+
+    questions = [question.format() for question in selection]
 
     return questions[start:end]
 
@@ -45,8 +47,7 @@ def create_app(test_config=None):
     @app.route('/questions', methods=['GET'])
     def get_questions():
         questions = Question.query.order_by(Question.id)
-        formatted_questions = [question.format() for question in questions]
-        current_questions = paginate_questions(request, formatted_questions)
+        current_questions = paginate_questions(request, questions)
 
         if len(current_questions) == 0:
             abort(404)
@@ -57,10 +58,32 @@ def create_app(test_config=None):
         return jsonify({
             'success': True,
             'questions': current_questions,
-            'total_questions': len(formatted_questions),
+            'total_questions': len(current_questions),
             'current_category': None,
             'categories': formatted_categories
         })
+
+    @app.route('/questions/<int:question_id>', methods=['DELETE'])
+    def delete_question(question_id):
+        try:
+            question = Question.query.filter(Question.id == question_id).one_or_none()
+
+            if question is None:
+                abort(404)
+
+            question.delete()
+            selection = Question.query.order_by(Question.id).all()
+            current_questions = paginate_questions(request, selection)
+
+            return jsonify({
+              "success": True,
+              "deleted": question_id,
+              "questions": current_questions,
+              "total_questions": len(current_questions)
+            })
+
+        except:
+            abort(422)
 
     @app.errorhandler(404)
     def not_found(error):
