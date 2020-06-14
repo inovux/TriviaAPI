@@ -85,6 +85,32 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/questions', methods=['POST'])
+    def create_question():
+        body = request.get_json()
+
+        new_question = body.get('question', None)
+        new_answer = body.get('answer', None)
+        new_category = body.get('category', None)
+        new_difficulty = body.get('difficulty', None)
+
+        try:
+            question_to_add = Question(
+              question=new_question,
+              answer=new_answer,
+              category=new_category,
+              difficulty=new_difficulty
+            )
+
+            question_to_add.insert()
+
+            return jsonify({
+              'success': True,
+              'created': question_to_add.id,
+            })
+        except:
+            abort(422)
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
