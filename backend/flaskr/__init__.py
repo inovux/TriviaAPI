@@ -46,7 +46,7 @@ def create_app(test_config=None):
 
     @app.route('/questions', methods=['GET'])
     def get_questions():
-        questions = Question.query.order_by(Question.id)
+        questions = Question.query.order_by(Question.id).all()
         current_questions = paginate_questions(request, questions)
 
         if len(current_questions) == 0:
@@ -58,7 +58,7 @@ def create_app(test_config=None):
         return jsonify({
             'success': True,
             'questions': current_questions,
-            'total_questions': len(current_questions),
+            'total_questions': len(questions),
             'current_category': None,
             'categories': formatted_categories
         })
