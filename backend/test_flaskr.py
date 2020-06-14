@@ -24,6 +24,13 @@ class TriviaTestCase(unittest.TestCase):
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
+
+        self.new_question = {
+          'question': 'What Dutch football club based in Utrecht plays in the Eredivisie?',
+          'answer': 'F.C. Utrecht',
+          'category': '6',
+          'difficulty': 3
+        }
     
     def tearDown(self):
         """Executed after reach test"""
@@ -69,7 +76,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['questions']))
         self.assertEqual(question, None)
 
+    def test_create_question(self):
+        res = self.client().post('/questions', json=self.new_question)
+        data = json.loads(res.data)
 
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['created'])
     """
     TODO
     Write at least one test for each test for successful operation and for expected errors.
