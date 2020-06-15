@@ -85,7 +85,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['created'])
 
     def test_get_questions_by_category_id(self):
-        res = self.client().post('/categories/3/questions')
+        res = self.client().get('/categories/3/questions')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
