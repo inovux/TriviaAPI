@@ -94,6 +94,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data['questions']))
         self.assertTrue(len(data['total_questions']))
 
+    def test_404_error_questions_by_category_id(self):
+        res = self.client().get('/categories/10/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['error'], 404)
+        self.assertEqual(data['message'], 'resource not found')
+
     """
     TODO
     Write at least one test for each test for successful operation and for expected errors.
