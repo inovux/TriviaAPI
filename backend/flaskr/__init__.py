@@ -111,6 +111,23 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/categories/<int:category_id>/questions')
+    def get_questions_by_category_id(category_id):
+        category = Category.query.filter(Category.id == category_id).one_or_none()
+
+        if category is None:
+            abort(404)
+
+        questions = Question.query.filter(category_id == Question.category).all()
+        formatted_questions = [question.format() for question in questions]
+
+        return jsonify({
+          'success': True,
+          'current_category': category_id,
+          'questions': formatted_questions,
+          'total_questions': len(formatted_questions)
+        })
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
