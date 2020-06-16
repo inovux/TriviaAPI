@@ -92,7 +92,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(data['current_category'], 3)
         self.assertTrue(len(data['questions']))
-        self.assertTrue(len(data['total_questions']))
+        self.assertTrue(data['total_questions'])
 
     def test_404_error_questions_by_category_id(self):
         res = self.client().get('/categories/10/questions')
