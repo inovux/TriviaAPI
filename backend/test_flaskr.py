@@ -26,12 +26,12 @@ class TriviaTestCase(unittest.TestCase):
             self.db.create_all()
 
         self.new_question = {
-          'question': 'What Dutch football club based in Utrecht plays in the Eredivisie?',
-          'answer': 'F.C. Utrecht',
-          'category': '6',
-          'difficulty': 3
+            'question': 'What Dutch football club based in Utrecht plays in the Eredivisie?',
+            'answer': 'F.C. Utrecht',
+            'category': '6',
+            'difficulty': 3
         }
-    
+
     def tearDown(self):
         """Executed after reach test"""
         pass
@@ -103,6 +103,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['error'], 404)
         self.assertEqual(data['message'], 'resource not found')
 
+    def test_get_question_by_search_term(self):
+        res = self.client().post('/questions/search', json={'search_term': 'What'})
+        data = json.loads(res.data)
+
+        searched_questions = Question.query.filter(Question.question.ilike('%What%')).all()
+        filtered_questions = [question.format() for question in searched_questions]
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['questions'], filtered_questions)
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
