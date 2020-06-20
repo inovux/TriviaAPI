@@ -128,6 +128,23 @@ def create_app(test_config=None):
           'total_questions': len(formatted_questions)
         })
 
+    @app.route('/questions/search', methods=['POST'])
+    def get_questions_by_search_term():
+        body = request.get_json()
+        search = body['search_term']
+
+        try:
+            selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
+            current_questions = paginate_questions(request, selection)
+            return jsonify({
+                'success': True,
+                'questions': current_questions,
+                'total_questions': len(selection.all())
+            })
+        except:
+            abort(422)
+
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
@@ -145,26 +162,26 @@ def create_app(test_config=None):
         }), 422
 
     '''
-  @TODO: 
-  Create a POST endpoint to get questions based on a search term. 
-  It should return any questions for whom the search term 
-  is a substring of the question. 
+  @TODO:
+  Create a POST endpoint to get questions based on a search term.
+  It should return any questions for whom the search term
+  is a substring of the question.
 
-  TEST: Search by any phrase. The questions list will update to include 
-  only question that include that string within their question. 
-  Try using the word "title" to start. 
+  TEST: Search by any phrase. The questions list will update to include
+  only question that include that string within their question.
+  Try using the word "title" to start.
   '''
 
     '''
-  @TODO: 
-  Create a POST endpoint to get questions to play the quiz. 
-  This endpoint should take category and previous question parameters 
-  and return a random questions within the given category, 
-  if provided, and that is not one of the previous questions. 
+  @TODO:
+  Create a POST endpoint to get questions to play the quiz.
+  This endpoint should take category and previous question parameters
+  and return a random questions within the given category,
+  if provided, and that is not one of the previous questions.
 
   TEST: In the "Play" tab, after a user selects "All" or a category,
   one question at a time is displayed, the user is allowed to answer
-  and shown whether they were correct or not. 
+  and shown whether they were correct or not.
   '''
 
     return app
