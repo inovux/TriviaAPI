@@ -142,23 +142,6 @@ def create_app(test_config=None):
           'total_questions': len(formatted_questions)
         })
 
-    @app.route('/questions/search', methods=['POST'])
-    def get_questions_by_search_term():
-        body = request.get_json()
-        search = body['search_term']
-
-        try:
-            selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
-            current_questions = paginate_questions(request, selection)
-            return jsonify({
-                'success': True,
-                'questions': current_questions,
-                'total_questions': len(selection.all())
-            })
-        except:
-            abort(422)
-
-
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
