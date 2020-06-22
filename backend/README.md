@@ -87,6 +87,10 @@ GET '/categories'
 '5' : "Entertainment",
 '6' : "Sports"}
 
+GET '/questions'
+DELETE '/questions/:question_id'
+POST '/questions'
+GET '/categories/:category_id/questions'
 ```
 
 
