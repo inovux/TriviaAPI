@@ -95,8 +95,6 @@ def create_app(test_config=None):
         new_difficulty = body.get('difficulty', None)
         search = body.get('searchTerm', None)
 
-        print('search')
-
         try:
             if search:
                 selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
