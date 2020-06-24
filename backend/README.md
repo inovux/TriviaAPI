@@ -91,6 +91,9 @@ GET '/questions'
 DELETE '/questions/:question_id'
 POST '/questions'
 GET '/categories/:category_id/questions'
+
+
+TODO: description for each route that is created. Check Udacity for more info on how to describe or document routes.
 ```
 
 
