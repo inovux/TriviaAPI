@@ -123,7 +123,7 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    @app.route('/categories/<int:category_id>/questions')
+    @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def get_questions_by_category_id(category_id):
         category = Category.query.filter(Category.id == category_id).one_or_none()
 
