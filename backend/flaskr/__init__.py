@@ -140,6 +140,12 @@ def create_app(test_config=None):
           'total_questions': len(formatted_questions)
         })
 
+    @app.route('/quizzes', methods=['POST'])
+    def start_quiz():
+        body = request.get_json()
+
+        print(body)
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
