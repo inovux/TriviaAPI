@@ -153,10 +153,12 @@ def create_app(test_config=None):
 
             if question:
                 return jsonify({
+                    "success": True,
                     "question": question.format()
                 })
             else:
                 return jsonify({
+                    "success": True,
                     "question": None
                 })
 
