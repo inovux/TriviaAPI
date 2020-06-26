@@ -122,12 +122,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(len(data['questions']), 0)
 
     def test_get_play_game_questions(self):
-        res = self.client().post('/quizzes', json={'quiz_category': 3, 'previous_questions': [14, 15]})
+        res = self.client().post('/quizzes', json={'quiz_category': {"type": "Geography", "id": 3}, 'previous_questions': [14, 15]})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertNotIn(data['question'].id, [14, 15])
+        self.assertNotIn(data['question'].get('id'), [14, 15])
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
