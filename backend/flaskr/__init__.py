@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy import func
 import random
 
 from models import setup_db, Question, Category
@@ -39,9 +40,9 @@ def create_app(test_config=None):
             abort(404)
 
         return jsonify({
-          'success': True,
-          'categories': formatted_categories,
-          'total_categories': len(formatted_categories)
+            'success': True,
+            'categories': formatted_categories,
+            'total_categories': len(formatted_categories)
         })
 
     @app.route('/questions', methods=['GET'])
@@ -76,10 +77,10 @@ def create_app(test_config=None):
             current_questions = paginate_questions(request, selection)
 
             return jsonify({
-              "success": True,
-              "deleted": question_id,
-              "questions": current_questions,
-              "total_questions": len(current_questions)
+                "success": True,
+                "deleted": question_id,
+                "questions": current_questions,
+                "total_questions": len(current_questions)
             })
 
         except:
@@ -107,10 +108,10 @@ def create_app(test_config=None):
 
             else:
                 question_to_add = Question(
-                  question=new_question,
-                  answer=new_answer,
-                  category=new_category,
-                  difficulty=new_difficulty
+                    question=new_question,
+                    answer=new_answer,
+                    category=new_category,
+                    difficulty=new_difficulty
                 )
 
                 question_to_add.insert()
@@ -134,32 +135,48 @@ def create_app(test_config=None):
         formatted_questions = [question.format() for question in questions]
 
         return jsonify({
-          'success': True,
-          'current_category': category_id,
-          'questions': formatted_questions,
-          'total_questions': len(formatted_questions)
+            'success': True,
+            'current_category': category_id,
+            'questions': formatted_questions,
+            'total_questions': len(formatted_questions)
         })
 
     @app.route('/quizzes', methods=['POST'])
     def start_quiz():
         body = request.get_json()
+        quiz_category_id = body.get('quiz_category', None).get('id', None)
+        previous_questions = body.get('previous_questions', None)
 
-        print(body)
+        try:
+            category_questions = Question.query.filter(Question.category == quiz_category_id)
+            question = category_questions.filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
+
+            if question:
+                return jsonify({
+                    "question": question.format()
+                })
+            else:
+                return jsonify({
+                    "question": None
+                })
+
+        except:
+            abort(422)
 
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
-          'success': False,
-          'error': 404,
-          'message': 'resource not found'
+            'success': False,
+            'error': 404,
+            'message': 'resource not found'
         }), 404
 
     @app.errorhandler(422)
     def unprocessable(error):
         return jsonify({
-          'success': False,
-          'error': 422,
-          'message': 'unprocessable'
+            'success': False,
+            'error': 422,
+            'message': 'unprocessable'
         }), 422
 
     '''
