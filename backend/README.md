@@ -66,7 +66,25 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
-REVIEW_COMMENT
+## Api Reference
+
+### Getting Started
+* Base URL: For now this app can only be run locally and is not hosted as a base URL. The backend app is hostend on the default: `http://127.0.0.1:5000/`, which is st as a proxy in the frontend configuration.
+
+### Error Handling
+Errors are returned in the following JSON format:
+```json
+{
+    "success": false,
+    "error": 404,
+    "message": "resource not found"
+}
+```
+
+The API will return two different error types when requests fail:
+* 404: Resource Not found
+* 422: No Processable
+
 ```
 This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
 
