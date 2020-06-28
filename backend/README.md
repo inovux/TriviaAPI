@@ -85,6 +85,28 @@ The API will return two different error types when requests fail:
 * 404: Resource Not found
 * 422: No Processable
 
+### Endpoints
+
+#### GET /categories
+* General:
+    * Returns a list of category objects, success value and total number of categories.
+* Sample: `curl http://127.0.0.1:5000/categories`
+
+```json
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "success": true,
+  "total_categories": 6
+}
+```
+
 ```
 This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
 
