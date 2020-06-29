@@ -200,6 +200,8 @@ The API will return two different error types when requests fail:
 }
 ```
 
+TODO: Rest of the routes provided by the API
+
 ## Testing
 To run the tests, run
 ```
