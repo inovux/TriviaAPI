@@ -202,6 +202,11 @@ The API will return two different error types when requests fail:
 
 TODO: Rest of the routes provided by the API
 
+DELETE `/questions/<int:question_id>`
+POST `/questions`
+GET `/categories/<int:category_id>/questions`
+POST `/quizzes`
+
 ## Testing
 To run the tests, run
 ```
