@@ -110,6 +110,7 @@ The API will return two different error types when requests fail:
 #### GET /questions
 * General:
     * Returns a list of question objects, category objects, success value and total number of questions.
+    * Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1.
 * Sample: `curl http://127.0.0.1:5000/questions`
 
 ```json
