@@ -353,9 +353,51 @@ The API will return two different error types when requests fail:
 }
 ```
 
+#### GET /categories/{category_id}/questions
+* General:
+    * Returns a list of question objects, success value, total number of questions, and given category id.
+* Sample: `curl http://127.0.0.1:5000/categories/2/questions`
+
+```json
+{
+  "current_category": 2,
+  "questions": [
+    {
+      "answer": "Escher",
+      "category": 2,
+      "difficulty": 1,
+      "id": 16,
+      "question": "Which Dutch graphic artist\\u2013initials M C was a creator of optical illusions?"
+    },
+    {
+      "answer": "Mona Lisa",
+      "category": 2,
+      "difficulty": 3,
+      "id": 17,
+      "question": "La Giaconda is better known as what?"
+    },
+    {
+      "answer": "One",
+      "category": 2,
+      "difficulty": 4,
+      "id": 18,
+      "question": "How many paintings did Van Gogh sell in his lifetime?"
+    },
+    {
+      "answer": "Jackson Pollock",
+      "category": 2,
+      "difficulty": 2,
+      "id": 19,
+      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+    }
+  ],
+  "success": true,
+  "total_questions": 4
+}
+```
+
 TODO: Rest of the routes provided by the API
 
-GET `/categories/<int:category_id>/questions`
 POST `/quizzes`
 
 ## Testing
