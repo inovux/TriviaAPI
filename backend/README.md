@@ -273,9 +273,88 @@ The API will return two different error types when requests fail:
 }
 ```
 
+#### POST /questions
+* General:
+    * Creates a new question using the submitted question, answer, category and difficulty. Returns success value, and the id of the created question.
+    * This route is also used for searching questions. When a `searchTerm` is given the search functionality will be used for this route. Returns success value, total questions, and questions based on current page number and given search term to update the frontend.
+ * Sample creating question: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "What Dutch football club based in Utrecht plays in the Eredivisie?", "answer": "F.C. Utrecht", "category": "6", "difficulty": 3}'`
+ * Sample searching questions: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm": "What"}'`
+
+**return value for creating a question**
+```json
+{
+  "created": 24,
+  "success": true
+}
+```
+**return value for searching questions**
+```json
+{
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "Mona Lisa",
+      "category": 2,
+      "difficulty": 3,
+      "id": 17,
+      "question": "La Giaconda is better known as what?"
+    },
+    {
+      "answer": "Blood",
+      "category": 1,
+      "difficulty": 4,
+      "id": 22,
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    },
+    {
+      "answer": "F.C. Utrecht",
+      "category": 6,
+      "difficulty": 3,
+      "id": 24,
+      "question": "What Dutch football club based in Utrecht plays in the Eredivisie?"
+    }
+  ],
+  "success": true,
+  "total_questions": 8
+}
+```
+
 TODO: Rest of the routes provided by the API
 
-POST `/questions`
 GET `/categories/<int:category_id>/questions`
 POST `/quizzes`
 
