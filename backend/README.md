@@ -396,9 +396,23 @@ The API will return two different error types when requests fail:
 }
 ```
 
-TODO: Rest of the routes provided by the API
+#### POST /quizzes
+* General:
+    * Returns a random question, and success value based on given quiz category and previous questions.
+ * Sample searching questions: `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"quiz_category": {"type": "Geography", "id": 3}, "previous_questions": [14, 15]}'`
 
-POST `/quizzes`
+```json
+{
+  "question": {
+    "answer": "Lake Victoria",
+    "category": 3,
+    "difficulty": 2,
+    "id": 13,
+    "question": "What is the largest lake in Africa?"
+  },
+  "success": true
+}
+```
 
 ## Testing
 To run the tests, run
