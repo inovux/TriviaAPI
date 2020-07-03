@@ -2,3 +2,4 @@
 lib
 frontend/node_modules
 *.pyc
+bin
