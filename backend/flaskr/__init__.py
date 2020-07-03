@@ -147,6 +147,9 @@ def create_app(test_config=None):
         quiz_category_id = body.get('quiz_category', None).get('id', None)
         previous_questions = body.get('previous_questions', None)
 
+        # TODO: When all category is clicked no questions are shown.
+        # TODO: Add logic for displaying quiz questions based on all categories.
+
         try:
             category_questions = Question.query.filter(Question.category == quiz_category_id)
             question = category_questions.filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
