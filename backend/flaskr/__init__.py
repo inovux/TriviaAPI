@@ -149,10 +149,13 @@ def create_app(test_config=None):
 
         # TODO: When all category is clicked no questions are shown.
         # TODO: Add logic for displaying quiz questions based on all categories.
-
         try:
-            category_questions = Question.query.filter(Question.category == quiz_category_id)
-            question = category_questions.filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
+            if quiz_category_id == 0:
+                question = Question.query.filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
+
+            else:
+                category_questions = Question.query.filter(Question.category == quiz_category_id)
+                question = category_questions.filter(Question.id.notin_(previous_questions)).order_by(func.random()).first()
 
             if question:
                 return jsonify({
