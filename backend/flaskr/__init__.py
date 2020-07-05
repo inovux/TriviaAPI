@@ -97,6 +97,7 @@ def create_app(test_config=None):
         search = body.get('searchTerm', None)
 
         try:
+            # TODO: Move search into it's own route
             if search:
                 selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
                 current_questions = paginate_questions(request, selection)
