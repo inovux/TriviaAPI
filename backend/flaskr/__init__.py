@@ -86,6 +86,24 @@ def create_app(test_config=None):
         except:
             abort(422)
 
+    @app.route('/questions/search', methods=['POST'])
+    def search_questions():
+        body = request.get_json()
+
+        search = body.get('searchTerm', None)
+
+        try:
+            selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
+            current_questions = paginate_questions(request, selection)
+            return jsonify({
+                'success': True,
+                'questions': current_questions,
+                'total_questions': len(selection.all())
+            })
+        except:
+            abort(422)
+
+
     @app.route('/questions', methods=['POST'])
     def create_question():
         body = request.get_json()
